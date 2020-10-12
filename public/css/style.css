@@ -1,0 +1,15 @@
+.body, html {
+    height: 100%;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("../img/xps-7ZWVnVSaafY-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+} 
+
+.search {
+    margin: 0px 0px 200px 0px;
+}
