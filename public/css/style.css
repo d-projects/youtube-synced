@@ -13,3 +13,56 @@
 .search {
     margin: 0px 0px 250px 0px;
 }
+
+.video {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+/* .video-container {
+    display: inline-block;
+} */
+
+/* .sessionID h4 {
+    border: 1px solid black;
+    border-radius: 5px;
+    color: green;
+    margin: 10px auto;
+    text-align: center;
+    display: inline-block;
+} */
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 20px;
+}
+
+.video-container{
+    flex: 5;
+}
+
+.sessionID {
+    text-align: center;
+    flex: 1;
+}
+
+.right-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 600px;;
+}
+
+.chat-container {
+    flex: 5;
+    overflow: auto;
+}
+
+#msgForm {
+    align-self: flex-end;
+}
+
+#message {
+    text-align: center;
+}
+
