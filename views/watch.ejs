@@ -59,6 +59,19 @@
 
       </div>
 
+      <div class = "container">
+
+                <form id = "control">
+                    <div class="form-row">
+                        <div class="col-3 ">
+                            <button type = "button" class = "btn btn-secondary control" id="submit">Take Control</button>
+                        </div>
+                        <div class="col-3 ">
+                            <button type = "button" class = "btn btn-secondary sync" id="submit">Sync Up</button>
+                        </div>
+                    </div>
+                </form>  
+      </div>
 
 
       <script>
@@ -83,14 +96,20 @@ function onYouTubeIframeAPIReady() {
             height: '600',
             width: '1000',
             videoId: videoID,
+            playerVars: {
+                controls: 0,
+                disablekb: 1,
+                rel : 0,
+                fs : 0,
+            },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         })
-        // setTimeout( () => {
-        //     //syncUp();
-        // }, 3000);
+        setTimeout( () => {
+            syncUp();
+        }, 1000);
 
     })
     .catch( err => {

@@ -31,7 +31,7 @@ io.on('connection', socket => {
 
     console.log('Webscoket connection working');
     const user = "user";
-    if (!session.master){
+    if (!session.users){
         session.users = 0;
         console.log(session.users)
         session.master = socket;
@@ -51,28 +51,35 @@ io.on('connection', socket => {
     //     session.master = Object.keys(io.sockets.connected)[0];
     // };
 
-    // socket.on('getControl', () => {
-    //     session.master = socket;
-    //     socket.broadcast.emit('loseControl');
-    // });
+    socket.on('getControl', () => {
+        session.master = socket;
+        socket.broadcast.emit('loseControl');
+    });
 
     socket.on('update', message => {
         io.emit('chatUpdated', message);
     });
 
+    socket.on('play', (time) => {
+        //io.sockets.connected[session.master].emit('getTime');
+        session.master.broadcast.emit('getTime');
+        socket.on('sendTime', (time) => {
+            io.emit('updatePlay', time);
+        })
+        
+    });
 
-    socket.on('sendTime', (info) => {
-
-        session.temp.emit('setTime', info);
-
+    socket.on('pause', () => {
+        //io.sockets.connected[session.master].emit('getTime');
+        session.master.broadcast.emit('getTime');
+        socket.on('sendTime', (time) => {
+            io.emit('updatePause', time);
+        })
     });
 
     socket.on('sync', () => {
-        if (session.master != socket)
-        {session.master.emit('getTime');
-        session.temp = socket;
-    
-    }
+        //io.sockets.connected[session.master].emit('getTime');
+        session.master.emit('getTime');
 
     });
 
