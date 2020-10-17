@@ -1,20 +1,13 @@
 
-// to-do: broadcast the controler
+// to-do: broadcast the controller
 // toggle classList
 const socket = io();
-let controller = false;
+
 let state;
 
 
 socket.on('join', message => {
     document.querySelector("#message").innerText = message.joinMessage;
-    // if (message.master){
-    //     controller = true;
-
-    // } else {
-    //     document.querySelector('iframe').classList.add('okok')
-    // }
-
 });
 
 function getVideoId() {
@@ -23,9 +16,9 @@ function getVideoId() {
 
 document.querySelector('#msgForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const message = e.target.elements.input.value;
-    e.target.elements.input.value = '';
-    socket.emit('update', message);
+    const message = e.target.elements.chatInput.value;
+    e.target.elements.chatInput.value = '';
+    socket.emit('updateChat', message);
 });
 
 let chatWindow = document.querySelector('.chat');
@@ -38,7 +31,7 @@ socket.on('chatUpdated', message => {
 
 const updateState = (e) => {
     
-    if (e.data == YT.PlayerState.BUFFERING || controller === false){
+    if (e.data == YT.PlayerState.BUFFERING){
     }
     else if (e.data == YT.PlayerState.PLAYING){
         state = YT.PlayerState.PLAYING       
@@ -55,10 +48,10 @@ const syncUp = () => {
 socket.on('getTime', () => {
     const time = player.getCurrentTime();
     socket.emit('sendTime', {time, state});
+    console.log(state);
 });
 
 socket.on('setTime', ({time, state: s}) => {
-    console.log('here')
     player.seekTo(time);
     if (s == YT.PlayerState.PLAYING){
         player.playVideo();
@@ -70,12 +63,6 @@ socket.on('setTime', ({time, state: s}) => {
 });
 
 document.querySelector('.sync').addEventListener('click', (e) => {
-    //e.preventDefault();
     syncUp();
-})
-
-socket.on('loseControl', () => {
-    controller = false;
-    document.querySelector('iframe').classList.remove('okok')
 })
 

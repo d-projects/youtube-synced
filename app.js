@@ -33,10 +33,12 @@ io.on('connection', socket => {
     const user = "user";
     if (!session.master){
         session.users = 0;
-        console.log(session.users)
+        
         session.master = socket;
     }
     session.users += 1;
+    console.log(session.users)
+    console.log(session.embedID);
 
 
     socket.emit('join', {
@@ -47,16 +49,8 @@ io.on('connection', socket => {
     socket.broadcast.emit('join', {
         joinMessage: `${user} has joined the chat`
     });
-    // if (Object.keys(io.sockets.connected).length == 1){
-    //     session.master = Object.keys(io.sockets.connected)[0];
-    // };
 
-    // socket.on('getControl', () => {
-    //     session.master = socket;
-    //     socket.broadcast.emit('loseControl');
-    // });
-
-    socket.on('update', message => {
+    socket.on('updateChat', message => {
         io.emit('chatUpdated', message);
     });
 
@@ -64,20 +58,22 @@ io.on('connection', socket => {
     socket.on('sendTime', (info) => {
 
         session.temp.emit('setTime', info);
+        session.temp = null;
 
     });
 
     socket.on('sync', () => {
-        if (session.master != socket)
-        {session.master.emit('getTime');
-        session.temp = socket;
-    
-    }
+
+        if (session.master != socket) {
+            session.master.emit('getTime');
+            session.temp = socket;
+        }
 
     });
 
     socket.on('disconnect', () => {
         session.users--;
+        console.log(session.users)
         if (session.master == socket){
             session.master = null;
         }

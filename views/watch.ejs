@@ -25,7 +25,7 @@
         </div>
       </nav>
 
-      <div class = "flex-container">
+      <!-- <div class = "flex-container"> -->
 
             <div class = "iframe-api">
                 <script src="https://www.youtube.com/iframe_api"></script>
@@ -47,30 +47,27 @@
                 <form id = "msgForm">
                     <div class="form-row">
                         <div class="col-9">
-                            <input type="text" class="form-control form-control-md" name="input" id="send">
+                            <input type="text" class="form-control form-control-md" name="chatInput">
                         </div>
                         <div class="col-3 ">
-                            <button type = "button" class = "btn btn-secondary" id="submit">Send</button>
+                            <button type = "submit" class = "btn btn-secondary">Send</button>
                         </div>
                       </div>
                 </form>  
 
         </div>
 
-      </div>
+      <!-- </div> -->
+    <div class = "container">
 
-      <div class = "container">
-
-                <form id = "control">
-                    <div class="form-row">
-                        <div class="col-3 ">
-                            <button type = "button" class = "btn btn-secondary control" id="submit">Take Control</button>
-                        </div>
-                        <div class="col-3 ">
-                            <button type = "button" class = "btn btn-secondary sync" id="submit">Sync Up</button>
-                        </div>
-                    </div>
-                </form>  
+            <div class="form-row">
+                <div class="col-3 ">
+                    <button type = "button" class = "btn btn-secondary control">Take Control</button>
+                </div>
+                <div class="col-3 ">
+                    <button type = "button" class = "btn btn-secondary sync">Sync Up</button>
+                </div>
+            </div>
       </div>
 
 
@@ -96,26 +93,28 @@ function onYouTubeIframeAPIReady() {
             height: '600',
             width: '1000',
             videoId: videoID,
-            playerVars: {
-                controls: 0,
-                disablekb: 1,
-                rel : 0,
-                fs : 0,
-            },
+            // playerVars: {
+            //     controls: 0,
+            //     disablekb: 1,
+            //     rel : 0,
+            //     fs : 0,
+            // },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         })
+        
         setTimeout( () => {
             syncUp();
         }, 1000);
+
+        document.querySelector('iframe').classList.add('.responsive-iframe');
 
     })
     .catch( err => {
         console.log(err);
     });
-
 
 
     const tag = document.createElement('script')

@@ -14,10 +14,6 @@
     margin: 0px 0px 250px 0px;
 }
 
-.video {
-    border: 1px solid black;
-    border-radius: 10px;
-}
 /* .video-container {
     display: inline-block;
 } */
@@ -31,14 +27,31 @@
     display: inline-block;
 } */
 
-.flex-container {
+/* .flex-container {
     display: flex;
     flex-direction: row;
     margin: 10px 20px;
+} */
+
+#video-container {
+    overflow: hidden;
+    position: relative;
+    width:70%;
+
 }
 
-.video-container{
-    flex: 5;
+#video-container:after {
+    padding-top: 56.25%;
+    display: block;
+    content: '';
+}
+
+#video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .sessionID {
@@ -47,10 +60,11 @@
 }
 
 .right-container {
-    flex: 1;
+    float: right;
+    height: 600px;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    height: 600px;;
 }
 
 .chat-container {
@@ -66,7 +80,7 @@
     text-align: center;
 }
 
-.okok {
+/* .okok {
     pointer-events: none;
 
-    }
+    } */
