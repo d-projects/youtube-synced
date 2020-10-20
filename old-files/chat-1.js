@@ -42,8 +42,6 @@ const dod = (time) => {
 
 
 
-
-
 const updateState = (e) => {
     
     console.log('here')

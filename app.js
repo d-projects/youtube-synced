@@ -24,8 +24,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 let count = 0;
 
-//const clients = [];
-//session.master = null;
+/**
+ * Handles the websocket connections
+ */
 
 io.on('connection', socket => {
 
@@ -87,24 +88,32 @@ server.listen(port, () => {
     console.log('working');
 });
 
-app.get('/test', (req, res) => {
-    res.render('test');
-});
-
-app.get('/', (req, res) => {
-    res.render('index');
-});
+/**
+ * Used by Fetch API to get youtube video ID
+ */
 
 app.get('/videoID', (req, res) => {
     res.send(JSON.stringify(session.embedID));
 })
+
+/**
+ * Home Page
+ */
+
+app.get('/', (req, res) => {
+    res.render('index', {title: 'Home'});
+});
+
+/**
+ * Synced Video Page
+ */
 
 app.post('/watch', (req, res) => {
     if (session.embedID == undefined || session.embedID == null){
         const url = parse(req.body.url, true);
         session.embedID = url.query.v;
     }
-    res.render('watch');
+    res.render('watch', {title: 'Watch'});
 });
 
 
