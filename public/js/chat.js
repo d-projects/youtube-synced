@@ -1,17 +1,18 @@
 
 // to-do: broadcast the controller
 // toggle classList
+// disable buttons while processing
+// change chat.js to something else
 const socket = io();
 
 let state;
-
 
 socket.on('join', message => {
     document.querySelector("#message").innerText = message.joinMessage;
 });
 
 function getVideoId() {
-    return videoID
+    return videoID;
 }
 
 document.querySelector('#msgForm').addEventListener('submit', (e) => {

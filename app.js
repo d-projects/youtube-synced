@@ -33,23 +33,24 @@ io.on('connection', socket => {
     console.log('Webscoket connection working');
     const user = "user";
     if (!session.master){
-        session.users = 0;
-        
+        //session.users = 0;
         session.master = socket;
     }
-    session.users += 1;
+    //session.users += 1;
     console.log(session.users)
     console.log(session.embedID);
 
-
+    socket.join(session.room);
     socket.emit('join', {
         joinMessage: "Welcome",
         videoID: session.embedID,
         master: (session.master == socket) ? true : false
     });
-    socket.broadcast.emit('join', {
+    socket.broadcast.to(session.room).emit('join', {
         joinMessage: `${user} has joined the chat`
     });
+
+
 
     socket.on('updateChat', message => {
         io.emit('chatUpdated', message);
@@ -57,29 +58,22 @@ io.on('connection', socket => {
 
 
     socket.on('sendTime', (info) => {
-
         session.temp.emit('setTime', info);
         session.temp = null;
-
     });
 
     socket.on('sync', () => {
-
         if (session.master != socket) {
             session.master.emit('getTime');
             session.temp = socket;
         }
-
     });
 
     socket.on('disconnect', () => {
-        session.users--;
-        console.log(session.users)
-        if (session.master == socket){
-            session.master = null;
-        }
-        socket.broadcast.emit('join', `${user} has left the chat`)
+
         session.embedID = null;
+        socket.broadcast.emit('join', `${user} has left the chat`)
+        
     });
 
 });
@@ -109,11 +103,19 @@ app.get('/', (req, res) => {
  */
 
 app.post('/watch', (req, res) => {
-    if (session.embedID == undefined || session.embedID == null){
-        const url = parse(req.body.url, true);
+    const url = parse(req.body.url, true);
+    if (session.embedID == undefined || session.embedID == null){      
         session.embedID = url.query.v;
     }
-    res.render('watch', {title: 'Watch'});
+    const room = Math.floor(Math.random() * 100000);
+    session.room = room;
+    res.render('watch', {title: 'Watch', room: room});
+});
+
+app.post('/join', (req, res) => {
+    const room = req.body.room;
+    session.room = room;
+    res.render('watch', {title: 'Watch', room: room});
 });
 
 
