@@ -41,24 +41,29 @@
         </div>
 
         <div clas = "controls-buttons">
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <button type = "button" class = "btn btn-secondary control">Take Control</button>
-            </div>
-    
+            </div> -->
+            <% if (master) { %>
+                <div class="form-row">
+                    <button type = "button" class = "btn btn-primary sync">Sync All Users</button>
+                </div>
+            <% } else { %>
+                <div class="form-row">
+                    <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
+                </div>
+            <% } %>
+
             <div class="form-row">
-                <button type = "button" class = "btn btn-secondary sync">Sync Up</button>
+                <button type = "button" class = "btn btn-success view-users">View All Users</button>
             </div>
 
             <div class="form-row">
-                <button type = "button" class = "btn btn-secondary">View All Users</button>
+                <button type = "button" class = "btn btn-warning name-change">Change Name</button>
             </div>
 
             <div class="form-row">
-                <button type = "button" class = "btn btn-secondary">Change Name</button>
-            </div>
-
-            <div class="form-row">
-                <button type = "button" class = "btn btn-secondary">Leave</button>
+                <button type = "button" class = "btn btn-danger leave">Leave</button>
             </div>
         </div>
 
@@ -70,7 +75,7 @@
 
 <script src = 'js/youtube-api-functions.js'></script>
 <div class = "chat-script"></div>
-<script src = '/socket.io/socket.js'></script>
+<script src = '/socket.io/socket.io.js'></script>
 
 
 

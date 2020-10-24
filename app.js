@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const dbURI = `mongodb+srv://${config.db_user}:${config.db_password}@${config.db_cluster}.ffgxc.mongodb.net/${config.db_name}`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
-        app.listen(port);
+        server.listen(port);
         console.log('connected');
     })
     .catch(err => {
@@ -48,9 +48,6 @@ io.on('connection', socket => {
     console.log('Webscoket connection working!');
     const user = "user";
 
-
-
-    console.log(session.room);
     socket.join(session.room);
     socket.emit('join', {
         joinMessage: "Welcome",
@@ -64,20 +61,16 @@ io.on('connection', socket => {
         socket.broadcast.to(session.room).emit('chatUpdated', message);
     });
 
-    socket.on('sendTime', (info) => {
-        session.temp.emit('setTime', info);
-        session.temp = null;
+    socket.on('sendTime', ({time, state, to}) => {
+        console.log(to);
+        io.sockets.connected[to].emit('setTime', {time, state});
     });
 
     socket.on('sync', () => {
-        if (!session.isMaster) {
-            session.masterSocket.emit('getTime');
-            session.temp = socket;
-        }
         if (session.isMaster){
             Room.findOne({room: session.room})
             .then( result => {
-                result.masterSocket = socket;
+                result.masterSocket = socket.id;
                 result.save()
                 .then( res => {
                     console.log('yess')
@@ -89,30 +82,35 @@ io.on('connection', socket => {
             .catch( err => {
                 console.log(err);
             })
-            session.masterSocket = socket;
+            session.masterSocket = io.sockets.connected[socket.id];
         } else {
             Room.findOne({room: session.room})
             .then( result => {
-                session.masterSocket = result.masterSocket;
+                session.masterSocket = io.sockets.connected[result.masterSocket];
             })
             .catch( err => {
                 console.log(err);
             })
+        }
+        if (!session.isMaster) {
+            session.masterSocket.emit('getTime', {to: socket.id});
         }
     });
 
     socket.on('disconnect', () => {
 
         session.embedID = null;
-        socket.broadcast.emit('join', `${user} has left the chat`)
+        socket.broadcast.to(session.room).emit('join', `${user} has left the chat`)
         session.open = false;
-        Blog.deleteOne({room: session.room})
-        .then( result => {
-            console.log('Yay')
-        })
-        .catch (err => {
-            console.log(err);
-        })
+        if (session.isMaster){
+            Room.deleteOne({room: session.room})
+            .then( result => {
+                console.log('Yay')
+            })
+            .catch (err => {
+                console.log(err);
+            })
+        }
         
     });
 
@@ -156,7 +154,7 @@ app.post('/watch', (req, res) => {
     .catch( err => {
         console.log(err);
     })
-    res.render('watch', {title: 'Watch', room: session.room});
+    res.render('watch', {title: 'Watch', room: session.room, master: true});
 });
 
 app.post('/join', (req, res) => {
@@ -171,7 +169,7 @@ app.post('/join', (req, res) => {
         console.log(err);
     })
     session.isMaster = false;
-    res.render('watch', {title: 'Watch', room: session.room});
+    res.render('watch', {title: 'Watch', room: session.room, master: false});
 });
 
 app.use( (req, res) => {

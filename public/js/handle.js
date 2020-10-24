@@ -12,9 +12,10 @@ socket.on('join', message => {
     document.querySelector("#message").innerText = message.joinMessage;
 });
 
-socket.on('getTime', () => {
+socket.on('getTime', ({to}) => {
     const time = player.getCurrentTime();
-    socket.emit('sendTime', {time, state});
+    socket.emit('sendTime', {time, state, to});
+    console.log(to)
     console.log(state);
 });
 
