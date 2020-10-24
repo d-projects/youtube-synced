@@ -58,12 +58,34 @@
 }
 
 .chat-container {
-    flex: 5;
+    flex: 8;
     overflow: auto;
+    border-style: solid;
+    border-radius: 5px;
+    word-break: break-all;
+    /* display: flex; */
+}
+
+.messageOther {
+    background-color: rgb(231, 189, 135);
+    margin-right: 100px;
+    border-radius: 0px 5px 5px 0px;
+    padding: 5px;
+    
+}
+
+.messageSelf{
+    background-color: rgb(110, 894, 228);
+    border-radius: 5px 0px 0px 5px;
+    padding: 5px;
+    margin-left: 100px;
+    
 }
 
 #msgForm {
     align-self: flex-end;
+    margin-top: 10px;
+    width: 100%;
 }
 
 #message {

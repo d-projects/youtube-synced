@@ -34,7 +34,7 @@ function onYouTubeIframeAPIReady() {
         console.log(err);
     });
     const tag = document.createElement('script')
-    tag.src = "/js/chat.js";
+    tag.src = "/js/handle.js";
     tag.type = 'text/javascript'
     var scriptLoc = document.querySelector('.chat-script');
     scriptLoc.appendChild(tag);
