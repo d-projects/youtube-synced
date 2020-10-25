@@ -27,7 +27,7 @@ function onYouTubeIframeAPIReady() {
         
         setTimeout( () => {
             syncUp();
-        }, 1000);
+        }, 500);
         document.querySelector('iframe').classList.add('.responsive-iframe');
     })
     .catch( err => {

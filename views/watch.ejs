@@ -13,58 +13,70 @@
     </div>
 
     <div class = "right-container">
-        <div class = "alert alert-success sessionID">
-              <h4> Room ID: <%= room %> <h5>
-        </div>
-        <div class = "chat-container">
-            <strong><p id="message"></p></strong>
-            <hr>
-            <div class = "chat"></div>
-        </div>
-        <form id = "msgForm">
-            <div class="form-row">
-                <div class="col-9">
-                    <input type="text" class="form-control form-control-md" name="chatInput">
-                </div>
-                <div class="col-3 ">
-                    <button type = "submit" class = "btn btn-secondary">Send</button>
-                </div>
-                </div>
-        </form>  
 
-    </div>
-
-    <div class = "controls-container">
-
-        <div class="controls-header">
-            <h2>Controls</h2>
+        <div class = "alert alert-success text-center main-message">
+            <h4> This is the message </h4>
         </div>
 
-        <div clas = "controls-buttons">
-            <!-- <div class="form-row">
-                <button type = "button" class = "btn btn-secondary control">Take Control</button>
-            </div> -->
-            <% if (master) { %>
+        <div class = "under-message">
+
+        <div class = "right-left-container">
+            <div class = "sessionID">
+                <h4> Room ID: <%= room %> <h5>
+            </div>
+            <div class = "chat-container">
+                <strong><p id="message"></p></strong>
+                <hr>
+                <div class = "chat"></div>
+            </div>
+            <form id = "msgForm">
                 <div class="form-row">
-                    <button type = "button" class = "btn btn-primary sync">Sync All Users</button>
-                </div>
-            <% } else { %>
+                    <div class="col-9">
+                        <input type="text" class="form-control form-control-md" name="chatInput">
+                    </div>
+                    <div class="col-3 ">
+                        <button type = "submit" class = "btn btn-secondary">Send</button>
+                    </div>
+                    </div>
+            </form>  
+
+        </div>
+
+        <div class = "controls-container">
+
+            <div class="controls-header">
+                <h2>Controls</h2>
+            </div>
+
+            <div clas = "controls-buttons">
+                <!-- <div class="form-row">
+                    <button type = "button" class = "btn btn-secondary control">Take Control</button>
+                </div> -->
+                <% if (master) { %>
+                    <div class="form-row">
+                        <button type = "button" class = "btn btn-primary sync">Sync All Users</button>
+                    </div>
+                <% } else { %>
+                    <div class="form-row">
+                        <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
+                    </div>
+                <% } %>
+
                 <div class="form-row">
-                    <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
+                    <button type = "button" class = "btn btn-success view-users">View All Users</button>
                 </div>
-            <% } %>
 
-            <div class="form-row">
-                <button type = "button" class = "btn btn-success view-users">View All Users</button>
+                <div class="form-row">
+                    <button type = "button" class = "btn btn-warning name-change">Change Name</button>
+                </div>
+
+                <div class="form-row">
+                    <button type = "button" class = "btn btn-danger"><a href="/" class="text-white"> Leave </a></button>
+                </div>
             </div>
 
-            <div class="form-row">
-                <button type = "button" class = "btn btn-warning name-change">Change Name</button>
             </div>
 
-            <div class="form-row">
-                <button type = "button" class = "btn btn-danger leave">Leave</button>
-            </div>
         </div>
 
 
