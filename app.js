@@ -12,6 +12,7 @@ const config = require('./config.js');
 const io = socketio(server);
 const port = process.env.PORT || 3000;
 const { v4: uuidv4 } = require('uuid');
+const urllib = require('urllib');
 const ios = require('socket.io-express-session');
 
 const session = require('express-session')({  
@@ -54,13 +55,14 @@ io.on('connection', socket => {
     const sess = socket.handshake.session;
 
     console.log('Webscoket connection working!');
-    if (sess.name == undefined) sess.name = 'Host'
+    if (sess.name == undefined) sess.name = 'User'
     const user = sess.name;
 
     socket.join(sess.room);
     socket.emit('join', {
         joinMessage: `Welcome, ${user}!`,
-        name: sess.name
+        name: sess.name,
+        isMaster: sess.isMaster
     });
     socket.broadcast.to(sess.room).emit('join', {
         joinMessage: `${user} has joined the chat`
@@ -70,13 +72,14 @@ io.on('connection', socket => {
         socket.broadcast.to(sess.room).emit('chatUpdated', {message, name: sess.name});
     });
 
-    socket.on('sendTime', ({time, state, to}) => {
-        console.log(to);
-        io.sockets.connected[to].emit('setTime', {time, state});
+    socket.on('sendTime', ({time, state, to, all = false}) => {
+        console.log(all);
+        if (all) socket.broadcast.to(sess.room).emit('setTime', {time, state});
+        else io.sockets.connected[to].emit('setTime', {time, state});
     });
 
     socket.on('sync', () => {
-        if (sess.isMaster){
+        if (sess.isMaster && !sess.masterSocket){
             Room.findOne({room: sess.room})
             .then( result => {
                 result.masterSocket = socket.id;
@@ -92,9 +95,14 @@ io.on('connection', socket => {
                 console.log(err);
             })
             sess.masterSocket = io.sockets.connected[socket.id];
-        } else {
+        } else if (sess.isMaster) {
+            socket.broadcast.to(sess.room).emit('syncing');
+            socket.emit('getTime', {to: 'all'})
+        }
+        else {
             Room.findOne({room: sess.room})
             .then( result => {
+                console.log(result)
                 sess.masterSocket = io.sockets.connected[result.masterSocket];
                 sess.masterSocket.emit('getTime', {to: socket.id});
             })
@@ -122,6 +130,43 @@ io.on('connection', socket => {
 
 });
 
+app.get('/checkRoom', (req, res) => {
+    const room = parseInt(req.query.room);
+    if (isNaN(room) || room.length < 5) {
+        res.send(JSON.stringify('Not Valid'));
+    } else {
+        Room.findOne({room: room})
+        .then(result => {
+            if (result == null){
+                res.send(JSON.stringify('Not Valid'))
+            } else {
+                res.send(JSON.stringify('Valid'))
+            }
+        })
+        .catch (err =>
+            res.send(JSON.stringify('Not Valid'))
+        )
+    }
+
+})
+
+app.get('/checkURL', (req, res) => {
+    const url = req.query.url;
+    urllib.request(url)
+    .then( response => {
+
+        if (response.status != 200){
+            res.send(JSON.stringify('That URL is not a valid YouTube URL'));
+        } else {
+            res.send(JSON.stringify('Valid'));
+        }
+    })
+    .catch(err => {
+        res.send(JSON.stringify('That URL is not a valid YouTube URL'));
+    })
+
+})
+
 /**
  * Used by Fetch API to get youtube video ID
  */
@@ -147,35 +192,36 @@ app.get('/', (req, res) => {
  */
 
 app.post('/watch', (req, res) => {
-    const url = parse(req.body.url, true);   
-    req.session.embedID = url.query.v;
-    const roomID = Math.floor(Math.random() * 100000);
-    req.session.room = roomID;
-    const room = new Room({room: roomID, videoID: req.session.embedID});
-    req.session.isMaster = true;
-    room.save()
-    .then( result => {
-        res.render('watch', {title: 'Watch', room: req.session.room, master: true});
-    })
-    .catch( err => {
-        console.log(err);
-    })
-    
-});
-
-app.post('/join', (req, res) => {
-    req.session.name = req.body.name;
-    Room.findOne({room: req.session.room})
-    .then( result => {
-        console.log(result)
-        req.session.embedID = result.videoID;
-        req.session.isMaster = false;
-        res.render('watch', {title: 'Watch', room: req.session.room, master: false});
-    })
-    .catch( err => {
-        console.log(err);
-    })
-
+    // do double input check and also check for valid url/room
+    if (req.body.room != ''){
+        req.session.name = req.body.name;
+        req.session.room = req.body.room;
+        Room.findOne({room: req.body.room})
+        .then( result => {
+            console.log(result)
+            req.session.embedID = result.videoID;
+            req.session.isMaster = false;
+            res.render('watch', {title: 'Watch', room: req.session.room, master: false});
+        })
+        .catch( err => {
+            console.log(err);
+        })
+    } else if (req.body.url != '') {
+        req.session.name = req.body.name;
+        const url = parse(req.body.url, true);   
+        req.session.embedID = url.query.v;
+        const roomID = Math.floor(Math.random() * 100000);
+        req.session.room = roomID;
+        const room = new Room({room: roomID, videoID: req.session.embedID});
+        req.session.isMaster = true;
+        room.save()
+        .then( result => {
+            res.render('watch', {title: 'Watch', room: req.session.room, master: true});
+        })
+        .catch( err => {
+            console.log(err);
+        })
+    }   
 });
 
 app.post('/name', (req, res) => {

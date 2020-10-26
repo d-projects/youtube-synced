@@ -8,15 +8,31 @@ const socket = io();
 let state;
 let chatWindow = document.querySelector('.chat');
 let selfName;
+const mainMsg = document.querySelector('.main-message h4');
+let syncing = true;
+let isMaster;
 
 socket.on('join', info => {
     document.querySelector("#message").innerText = info.joinMessage;
-    selfName = info.name;
+    if (!selfName){
+        selfName = info.name;
+        console.log(selfName);
+    }
+    if (!isMaster) {
+        isMaster = info.isMaster
+        mainMsg.innerText = 'You are the host';
+    }
 });
+
+socket.on('syncing', () => {
+    syncing = true;
+})
 
 socket.on('getTime', ({to}) => {
     const time = player.getCurrentTime();
-    socket.emit('sendTime', {time, state, to});
+    all = false;
+    if (to == 'all') all = true;
+    socket.emit('sendTime', {time, state, to, all});
     console.log(to)
     console.log(state);
 });
@@ -30,6 +46,7 @@ socket.on('setTime', ({time, state: s}) => {
         player.pauseVideo();
         state = s;
     }
+
 });
 
 socket.on('chatUpdated', ({message, name}) => {
@@ -54,9 +71,26 @@ const updateState = (e) => {
     if (e.data == YT.PlayerState.BUFFERING){
     }
     else if (e.data == YT.PlayerState.PLAYING){
-        state = YT.PlayerState.PLAYING       
+        state = YT.PlayerState.PLAYING;
+        if (isMaster && !syncing) {
+            syncUp();
+        }
+        else if (!syncing) {
+            displayMsg(false);
+        }
+        syncing = false;
     } else if (e.data == YT.PlayerState.PAUSED) {
-        state = YT.PlayerState.PAUSED   
+        state = YT.PlayerState.PAUSED;
+        if (isMaster && !syncing) {
+            syncUp();
+        }
+        else if (!syncing) {
+            displayMsg(false);
+        }
+        setTimeout(() => {
+            syncing = false;
+        }, 1000);
+
     }
 }
 
@@ -65,7 +99,24 @@ const getVideoId = () => {
 }
 
 const syncUp = () => {
+    syncing = true;
     socket.emit('sync');
+    displayMsg(true);
+
+}
+
+const displayMsg = inSync => {
+    if (!isMaster) {
+        if (inSync) {
+            mainMsg.innerText = 'You are in sync with the host!';
+            mainMsg.parentNode.classList.remove('alert-danger');
+            mainMsg.parentNode.classList.add('alert-success');
+        } else {
+            mainMsg.innerText = 'You are not in sync anymore!';
+            mainMsg.parentNode.classList.remove('alert-success');
+            mainMsg.parentNode.classList.add('alert-danger');s
+        }
+    }
 }
 
 document.querySelector('#msgForm').addEventListener('submit', (e) => {
@@ -84,7 +135,9 @@ document.querySelector('#msgForm').addEventListener('submit', (e) => {
     updateScroll();
 });
 
-document.querySelector('.sync').addEventListener('click', (e) => {
-    syncUp();
-})
+if (document.querySelector('.sync')) {
+    document.querySelector('.sync').addEventListener('click', (e) => {
+        syncUp();
+    })
+}
 

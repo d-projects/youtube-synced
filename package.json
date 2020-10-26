@@ -17,6 +17,7 @@
     "socket.io": "^2.3.0",
     "socket.io-express-session": "^0.1.3",
     "url-parse": "^1.4.7",
+    "urllib": "^2.36.1",
     "uuid": "^8.3.1"
   }
 }

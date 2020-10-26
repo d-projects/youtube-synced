@@ -151,7 +151,7 @@
     margin-right: 20px;
 }
 
-.form-row button {
+.form-row button, .leave {
     margin-bottom: 10px;
     width: 100%;
 }

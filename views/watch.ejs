@@ -15,7 +15,7 @@
     <div class = "right-container">
 
         <div class = "alert alert-success text-center main-message">
-            <h4> This is the message </h4>
+            <h4> </h4>
         </div>
 
         <div class = "under-message">
@@ -52,16 +52,12 @@
                 <!-- <div class="form-row">
                     <button type = "button" class = "btn btn-secondary control">Take Control</button>
                 </div> -->
-                <% if (master) { %>
-                    <div class="form-row">
-                        <button type = "button" class = "btn btn-primary sync">Sync All Users</button>
-                    </div>
-                <% } else { %>
+                <% if (!master) { %>
                     <div class="form-row">
                         <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
                     </div>
                 <% } %>
-
+                    
                 <div class="form-row">
                     <button type = "button" class = "btn btn-success view-users">View All Users</button>
                 </div>
@@ -71,7 +67,7 @@
                 </div>
 
                 <div class="form-row">
-                    <button type = "button" class = "btn btn-danger"><a href="/" class="text-white"> Leave </a></button>
+                    <a href="/" class="text-white leave"><button type = "button" class = "btn btn-danger"> Leave </button></a>
                 </div>
             </div>
 
