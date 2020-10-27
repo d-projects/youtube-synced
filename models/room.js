@@ -12,6 +12,10 @@ const roomSchema = new mongoose.Schema({
     masterSocket: {
         type: String,
         required: false
+    },
+    sockets: {
+        type: Array,
+        required: false
     }
 });
 

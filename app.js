@@ -74,8 +74,8 @@ io.on('connection', socket => {
 
     socket.on('sendTime', ({time, state, to, all = false}) => {
         console.log(all);
-        if (all) socket.broadcast.to(sess.room).emit('setTime', {time, state});
-        else io.sockets.connected[to].emit('setTime', {time, state});
+        if (all) socket.broadcast.to(sess.room).emit('setTime', {time, state, hostChange: true});
+        else io.sockets.connected[to].emit('setTime', {time, state, hostChange: false});
     });
 
     socket.on('sync', () => {
@@ -114,7 +114,9 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
 
-        socket.broadcast.to(sess.room).emit('join', `${sess.name} has left the chat`)
+        io.to(sess.room).emit('join', {
+            joinMessage: `${user} has left the chat`
+        });
         if (sess.isMaster){
             Room.deleteOne({room: sess.room})
             .then( result => {

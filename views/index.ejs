@@ -19,7 +19,7 @@
         <form id="joinForm">
           <div class="form-row">
             <div class="col-8 col-md-5 mb-2 mb-md-0">
-              <input type="text" name="room" class="form-control form-control-lg" placeholder="Enter a session id...">
+              <input type="text" name="room" class="form-control form-control-lg" placeholder="Enter a session id..." required>
             </div>
             <div class="col-8 col-md-3">
               <button type="submit" class="btn btn-block btn-lg btn-primary join">Join a Session</button>
@@ -31,7 +31,7 @@
         <form id="startForm">
           <div class="form-row">
             <div class="col-12 col-md-9 mb-2 mb-md-0">
-              <input type="text" name="url" class="form-control form-control-lg" placeholder="Enter a youtube video url...">
+              <input type="text" name="url" class="form-control form-control-lg" placeholder="Enter a youtube video url..." required>
             </div>
             <div class="col-12 col-md-3">
               <button type="submit" class="btn btn-block btn-lg btn-success start">Start a Session</button>
@@ -87,6 +87,7 @@ document.querySelector('#joinForm').addEventListener('submit', (e) => {
   .then( response => {
     if (response === 'Valid') {
       $('#nameModal').modal('show');
+      $('#nameModal').find('#name').focus();
       $('#room').val(room);
       $('#url').val('');
     } else {
@@ -114,6 +115,7 @@ document.querySelector('#startForm').addEventListener('submit', (e) => {
   .then( response => {
     if (response === 'Valid') {
       $('#nameModal').modal('show');
+      $('#nameModal').find('#name').focus();
       $('#url').val(url);
       $('#room').val('');
     } else {

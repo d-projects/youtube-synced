@@ -33,11 +33,12 @@ socket.on('getTime', ({to}) => {
     all = false;
     if (to == 'all') all = true;
     socket.emit('sendTime', {time, state, to, all});
-    console.log(to)
-    console.log(state);
 });
 
-socket.on('setTime', ({time, state: s}) => {
+socket.on('setTime', (info) => {
+
+    const time = info.time;
+    const s = info.state;
     player.seekTo(time);
     if (s == YT.PlayerState.PLAYING){
         player.playVideo();
@@ -45,6 +46,13 @@ socket.on('setTime', ({time, state: s}) => {
     } else if (s == YT.PlayerState.PAUSED) {
         player.pauseVideo();
         state = s;
+    }
+
+    if (info.hostChange == true) {
+        mainMsg.innerText = 'The host changed the video state!';
+        mainMsg.parentNode.classList.remove('alert-danger');
+        mainMsg.parentNode.classList.remove('alert-success');
+        mainMsg.parentNode.classList.add('alert-warning');
     }
 
 });
@@ -78,7 +86,9 @@ const updateState = (e) => {
         else if (!syncing) {
             displayMsg(false);
         }
-        syncing = false;
+        setTimeout(() => {
+            syncing = false;
+        }, 1000);
     } else if (e.data == YT.PlayerState.PAUSED) {
         state = YT.PlayerState.PAUSED;
         if (isMaster && !syncing) {
@@ -110,10 +120,12 @@ const displayMsg = inSync => {
         if (inSync) {
             mainMsg.innerText = 'You are in sync with the host!';
             mainMsg.parentNode.classList.remove('alert-danger');
+            mainMsg.parentNode.classList.remove('alert-warning');
             mainMsg.parentNode.classList.add('alert-success');
         } else {
             mainMsg.innerText = 'You are not in sync anymore!';
             mainMsg.parentNode.classList.remove('alert-success');
+            mainMsg.parentNode.classList.remove('alert-warning');
             mainMsg.parentNode.classList.add('alert-danger');s
         }
     }
