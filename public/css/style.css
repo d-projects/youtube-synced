@@ -195,8 +195,8 @@
 }
 
 .footer-custom {
-    position: relative;
-    margin-top: 250px; /* negative value of footer height */
+    /* position: relative;
+    margin-top: 250px; negative value of footer height */
     height: 75px;
     background-color:black;
     color: white;

@@ -189,6 +189,15 @@ app.get('/', (req, res) => {
     res.render('index', {title: 'Home'});
 });
 
+
+app.get('/login', (req, res) => {
+    res.render('login', {title: 'Login'});
+});
+
+app.get('/sign-up', (req, res) => {
+    res.render('sign-up', {title: 'Sign Up'});
+});
+
 /**
  * Synced Video Page
  */
