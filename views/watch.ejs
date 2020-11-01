@@ -18,12 +18,24 @@
             <h4> </h4>
         </div>
 
+        <div class = "black-container">
+
+            <div class = "sessionID">
+                <h4> Room ID: <%= room %> <h4>
+            </div>
+    
+            <div class="controls-header">
+                <h4>Controls</h4>
+            </div>
+
+        </div>
+
+
+
         <div class = "under-message">
 
         <div class = "right-left-container">
-            <div class = "sessionID">
-                <h4> Room ID: <%= room %> <h5>
-            </div>
+
             <div class = "chat-container">
                 <strong><p id="message"></p></strong>
                 <hr>
@@ -38,15 +50,37 @@
                         <button type = "submit" class = "btn btn-secondary">Send</button>
                     </div>
                     </div>
-            </form>  
+            </form>
+
+            <div class = "view-users-container" style = "display: none;">
+                <h3> This feature is currently unavailable </h3>
+                <!-- <ul>
+                    <li>Test</li>
+                    <li>Test</li>
+                    <li>Test</li>
+                </ul> -->
+            </div>
+
+            <div class = "change-name-container" style = "display: none;">
+                <form id = "nameForm">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="newName">Choose a new name: </label>
+                            <input type="text" class="form-control form-control-md" name="newName" id="newName">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        <div class="col-3 ">
+                            <button type = "submit" class = "btn btn-secondary">Change</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
         </div>
 
         <div class = "controls-container">
-
-            <div class="controls-header">
-                <h2>Controls</h2>
-            </div>
 
             <div clas = "controls-buttons">
                 <!-- <div class="form-row">
@@ -57,6 +91,10 @@
                         <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
                     </div>
                 <% } %>
+
+                <div class="form-row">
+                    <button type = "button" class = "btn btn-secondary view-chat">Display Chat</button>
+                </div>
                     
                 <div class="form-row">
                     <button type = "button" class = "btn btn-success view-users">View All Users</button>

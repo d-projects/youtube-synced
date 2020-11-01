@@ -49,16 +49,28 @@
 
 .sessionID {
     text-align: center;
+    flex: 3;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
+
+.controls-header {
     flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    align-self: center;
     margin-bottom: 10px;
     width: 100%;
     background-color: black;
     color: white;
     border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+    margin-left: 10px;
+    margin-right: 10px;
+    
 }
 
 .right-container {
@@ -85,8 +97,8 @@
     flex-direction: column;
     margin-right: 10px;
     margin-left: 10px;
-    flex: 2;
-    height: 525px; /* not fully sure about this */
+    flex: 3;
+    height: 475px; /* not fully sure about this */
 }
 
 .chat-container {
@@ -95,6 +107,25 @@
     border-radius: 5px;
     word-break: break-all;
     overflow: auto;
+}
+
+.view-users-container {
+    flex: 8;
+    text-align: center;
+    /* border-style: solid;
+    border-radius: 5px; */
+}
+
+.change-name-container {
+    flex: 8;
+    /* border-style: solid;
+    border-radius: 5px; */
+}
+
+.black-container {
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .message-other {
@@ -156,17 +187,7 @@
     width: 100%;
 }
 
-.controls-header {
-    /* flex-grow: 0.15; */
-    text-align: center;
-    align-self: center;
-    margin-bottom: 10px;
-    width: 100%;
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-    
-}
+
 
 .controls-buttons {
     /* flex: 10; */
@@ -175,7 +196,7 @@
 
 .footer-custom {
     position: relative;
-    margin-top: 200px; /* negative value of footer height */
+    margin-top: 250px; /* negative value of footer height */
     height: 75px;
     background-color:black;
     color: white;

@@ -11,6 +11,10 @@ let selfName;
 const mainMsg = document.querySelector('.main-message h4');
 let syncing = true;
 let isMaster;
+const chatContainer = document.querySelector('.chat-container');
+const usersContainer = document.querySelector('.view-users-container');
+const nameContainer = document.querySelector('.change-name-container');
+const messageForm = document.querySelector('#msgForm');
 
 socket.on('join', info => {
     document.querySelector("#message").innerText = info.joinMessage;
@@ -54,6 +58,10 @@ socket.on('setTime', (info) => {
         mainMsg.parentNode.classList.remove('alert-success');
         mainMsg.parentNode.classList.add('alert-warning');
     }
+
+    setTimeout(() => {
+        document.querySelector('.sync').disabled = "";
+    }, 3000);
 
 });
 
@@ -150,6 +158,32 @@ document.querySelector('#msgForm').addEventListener('submit', (e) => {
 if (document.querySelector('.sync')) {
     document.querySelector('.sync').addEventListener('click', (e) => {
         syncUp();
+        document.querySelector('.sync').disabled = "disabled";
     })
 }
+
+document.querySelector('#nameForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+});
+
+document.querySelector('.view-users').addEventListener('click', (e) => {
+    chatContainer.style.display = 'none';
+    messageForm.style.display = 'none';
+    nameContainer.style.display = 'none';
+    usersContainer.style.display = '';
+})
+
+document.querySelector('.name-change').addEventListener('click', (e) => {
+    chatContainer.style.display = 'none';
+    messageForm.style.display = 'none';
+    usersContainer.style.display = 'none';
+    nameContainer.style.display = '';
+})
+
+document.querySelector('.view-chat').addEventListener('click', (e) => {
+    usersContainer.style.display = 'none';
+    nameContainer.style.display = 'none';
+    chatContainer.style.display = '';
+    messageForm.style.display = '';
+})
 

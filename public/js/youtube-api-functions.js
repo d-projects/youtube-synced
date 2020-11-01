@@ -27,7 +27,12 @@ function onYouTubeIframeAPIReady() {
         
         setTimeout( () => {
             syncUp();
+            // double sync just in case
+            setTimeout( () => {
+                syncUp();
+            }, 500);
         }, 500);
+
         document.querySelector('iframe').classList.add('.responsive-iframe');
     })
     .catch( err => {
