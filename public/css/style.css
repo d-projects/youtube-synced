@@ -75,7 +75,7 @@
 
 }
 
-.under-message {
+.right-bottom {
     flex: 8;
     display: flex;
 }
@@ -85,7 +85,7 @@
     flex-direction: column;
     margin-right: 10px;
     margin-left: 10px;
-    flex: 2;
+    flex: 3;
     height: 525px; /* not fully sure about this */
 }
 
@@ -149,12 +149,37 @@
     flex-direction: column;
     margin-left: 10px;
     margin-right: 20px;
+    border-radius: 5px;
+    margin-top: 50px;
 }
 
 .form-row button, .leave {
     margin-bottom: 10px;
     width: 100%;
 }
+
+.side-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-bar li {
+    padding: 5px;
+    color:black;
+    text-align: center;
+    border-bottom-style: solid;
+    border-color: white;
+    border-width: 1px;
+    border-radius: 5px;
+    background-color: #6C757D;
+}
+
+.side-bar li:hover {
+    cursor: pointer;
+    background-color: red;
+}
+
 
 .controls-header {
     /* flex-grow: 0.15; */

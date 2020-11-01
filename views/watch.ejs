@@ -18,58 +18,65 @@
             <h4> </h4>
         </div>
 
-        <div class = "under-message">
+        <div class = "right-bottom">
 
-        <div class = "right-left-container">
-            <div class = "sessionID">
-                <h4> Room ID: <%= room %> <h5>
-            </div>
-            <div class = "chat-container">
-                <strong><p id="message"></p></strong>
-                <hr>
-                <div class = "chat"></div>
-            </div>
-            <form id = "msgForm">
-                <div class="form-row">
-                    <div class="col-9">
-                        <input type="text" class="form-control form-control-md" name="chatInput">
-                    </div>
-                    <div class="col-3 ">
-                        <button type = "submit" class = "btn btn-secondary">Send</button>
-                    </div>
-                    </div>
-            </form>  
-
-        </div>
-
-        <div class = "controls-container">
-
-            <div class="controls-header">
-                <h2>Controls</h2>
-            </div>
-
-            <div clas = "controls-buttons">
-                <!-- <div class="form-row">
-                    <button type = "button" class = "btn btn-secondary control">Take Control</button>
-                </div> -->
-                <% if (!master) { %>
+            <div class = "right-left-container">
+                <div class = "sessionID">
+                    <h4> Room ID: <%= room %> <h5>
+                </div>
+                <div class = "chat-container">
+                    <strong><p id="message"></p></strong>
+                    <hr>
+                    <div class = "chat"></div>
+                </div>
+                <form id = "msgForm">
                     <div class="form-row">
-                        <button type = "button" class = "btn btn-primary sync">Sync With Host</button>
+                        <div class="col-9">
+                            <input type="text" class="form-control form-control-md" name="chatInput">
+                        </div>
+                        <div class="col-3 ">
+                            <button type = "submit" class = "btn btn-secondary">Send</button>
+                        </div>
                     </div>
-                <% } %>
-                    
-                <div class="form-row">
-                    <button type = "button" class = "btn btn-success view-users">View All Users</button>
-                </div>
+                </form>  
 
-                <div class="form-row">
-                    <button type = "button" class = "btn btn-warning name-change">Change Name</button>
-                </div>
-
-                <div class="form-row">
-                    <a href="/" class="text-white leave"><button type = "button" class = "btn btn-danger"> Leave </button></a>
-                </div>
             </div>
+
+            <div class = "controls-container">
+
+                <!-- <div class="controls-header">
+                    <h2>Controls</h2>
+                </div> -->
+
+                <div clas = "controls-buttons">
+                    <!-- <div class="form-row">
+                        <button type = "button" class = "btn btn-secondary control">Take Control</button>
+                    </div> -->
+                    <% if (!master) { %>
+                        <div class="form-row">
+                            <!-- <button type = "button" class = "btn btn-primary sync">Sync With Host</button> -->
+                            <a href="">Sync With Host</a>
+                        </div>
+                    <% } %>
+                        
+                    <ul class = "side-bar">
+
+                        <li>Sync With Host</li>
+
+
+
+                        <!-- <button type = "button" class = "btn btn-warning name-change">Change Name</button> -->
+                        <li>Change Name</li>
+
+
+
+                        <!-- <a href="/" class="text-white leave"><button type = "button" class = "btn btn-danger"> Leave </button></a> -->
+                        <li>Leave</li>
+                    </ul>
+
+                </div>
+
+                </div>
 
             </div>
 
@@ -86,5 +93,3 @@
 <script src = '/socket.io/socket.io.js'></script>
 
 
-
-<%- include ('./partials/footer') %>
