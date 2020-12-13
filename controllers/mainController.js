@@ -1,6 +1,8 @@
 const Room = require('../models/room.js');
+const User = require('../models/user.js');
 const urllib = require('urllib');
 const parse = require('url-parse');
+const bcrypt = require('bcryptjs');
 
 /**
  * Home Page
@@ -15,7 +17,11 @@ const main_index = (req, res) => {
  */
 
 const main_login_get = (req, res) => {
-    res.render('login', {title: 'Login'});
+    let inValid = false;
+    if (req.query.inValid) {
+        inValid = true;
+    }
+    res.render('login', {title: 'Login', inValid});
 }
 
 /**
@@ -24,6 +30,13 @@ const main_login_get = (req, res) => {
 
 const main_signUp_get = (req, res) => {
     res.render('sign-up', {title: 'Sign Up'});
+}
+
+/**
+ * The Forgot Password page
+ */
+const main_forgotPassword_get = (req, res) => {
+    res.render('forgot-password', {title: 'Forgot Password'});
 }
 
 /**
@@ -123,6 +136,54 @@ const main_watch_post = (req, res) => {
     }   
 }
 
+/**
+ * Authorizes a user login
+ */
+const main_authorize_post = (req, res) => {
+    let auth = false;
+    User.findOne({email: req.body.email})
+    .then( userInfo => {
+        if (userInfo) {
+            bcrypt.compare(res.body.password, userInfo.body.password, (err, valid) => {
+                if (valid) {
+                    req.session.user = userInfo;
+                    res.render('index', {title: 'Home'});
+                    auth = true;
+                }
+            });
+        }
+    });
+
+    if (!auth) {
+        res.redirect('login?inValid=true');
+    }
+}
+
+/**
+ * Handles registering a user
+ */
+const main_signUp_post = (req, res) => {
+    errors = [];
+    User.findOne({email: req.body.email})
+    .then( result => {
+        if (result) {
+            errors.push(errorList['emailUsed']);
+        } else {
+            if (res.body.password.length < 8) {
+                errors.push(errorList['passLength']);
+            }
+            if (res.body.password !== req.body.repeatPass) {
+                errors.push(errorList['noMatch']);
+            }
+        }
+    });
+
+    if (errors.length > 0) {
+        res.redirect('sign-up', {title: 'My Account', errors});
+    }
+    res.redirect('account', {title: 'My Account'});
+}
+
 module.exports = {
     main_index,
     main_login_get,
@@ -131,5 +192,8 @@ module.exports = {
     main_videoID_get,
     main_checkURL_get,
     main_checkRoom_get,
-    main_watch_post
+    main_forgotPassword_get,
+    main_watch_post,
+    main_authorize_post,
+    main_signUp_post
 };

@@ -1,6 +1,26 @@
 <%- include ('./partials/header') %>
 <%- include ('./partials/nav') %>
 
-<br> <br>
-<h1 class="text-center"> This page is currently not available. Sorry! </h1>
+<div class = "auth-form">
+    <form class = "form-signup" method = "post" action = "/sign-up">
+        <h1 class = "h3 mb-3 font-weight-normal" style = "text-align: center">Sign Up</h1>
+        <div class = "social-login">
+            <!-- OAuth-->
+            <!-- <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span> </button>
+            <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </button> -->
+        </div>
+        <!-- <p class="text-center"> OR </p> -->
+        <input type="text" id="username" class="form-control" placeholder="Username" required=""  minlength="3"><br/>
+        <input type="email" id="user-email" class="form-control" placeholder="Email address" required><br/>
+        <input type="password" id="user-pass" name = "password" class="form-control" placeholder="Password" required><br/>
+        <input type="password" id="user-repeatpass" name = "repeatPass" class="form-control" placeholder="Repeat Password" required><br/>
+
+        <button class="btn btn-secondary btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Sign Up</button>
+        <a href="/login" id="log-in">Already have an account? Log In</a>
+
+    </form>
+              
+</div>
+
+<%- include ('./partials/footer') %>
 

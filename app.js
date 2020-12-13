@@ -1,23 +1,25 @@
 const { render } = require('ejs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
 const app = express();
-const socketio = require('socket.io');
-const server = http.createServer(app);
 const mongoose = require('mongoose');
 const Room = require('./models/room.js');
 const config = require('./config.js');
-const io = socketio(server);
-const port = process.env.PORT || 3000;
-const { v4: uuidv4 } = require('uuid');
+const socketio = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
 const ios = require('socket.io-express-session');
-const mainRoutes = require('./routes/mainRoutes.js');
-
+const port = process.env.PORT || 3000;
 
 /**
- * Configure Session
+ * Set routing
  */
+const mainRoutes = require('./routes/mainRoutes.js');
+
+/**
+ * Set session
+ */
+const { v4: uuidv4 } = require('uuid');
 const session = require('express-session')({  
     genid: req => uuidv4(),
     secret: 'random string',
@@ -25,8 +27,7 @@ const session = require('express-session')({
     saveUninitialized: true,
     cookie: { secure: false }
  });
-app.use(session)
-io.use(ios(session))
+app.use(session);
 
 /**
  * Set up app
@@ -35,39 +36,62 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 /**
  * Connect to database
  */
 const dbURI = `mongodb+srv://${config.db_user}:${config.db_password}@${config.db_cluster}.ffgxc.mongodb.net/${config.db_name}`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(result => {
-        server.listen(port);
-    })
-    .catch(err => {
-
-    });
-
+.then(result => {
+    server.listen(port);
+});
 
 /**
- * Handles the websocket connections
+ * Direct requests to main router
  */
+app.use('', mainRoutes);
 
-io.on('connection', socket => {
+/**
+ * 404 Error Page
+ */
+app.use( (req, res) => {
+    res.status(404).render('404', {title: 'Page Not Found'});
+});
+
+
+/*********************** Socket.io hanndling **********************/
+
+const io = socketio(server);
+io.use(ios(session));
+
+io.on('connection', (socket) => {
 
     const sess = socket.handshake.session;
 
-    console.log('Webscoket connection working!');
     if (sess.name == undefined) sess.name = 'User'
     const user = sess.name;
-
     socket.join(sess.room);
-    socket.emit('join', {
-        joinMessage: `Welcome, ${user}!`,
-        name: sess.name,
-        isMaster: sess.isMaster
-    });
-    socket.broadcast.to(sess.room).emit('join', {
-        joinMessage: `${user} has joined the chat`
+    Room.findOne({room: sess.room})
+    .then( result => {
+        if (!result) return;
+
+        result.sockets.push({
+            socket: socket.id, 
+            name: sess.name
+        });
+        Room.findOneAndUpdate({room: sess.room}, result)
+        .then( res => {
+            socket.emit('join', {
+                joinMessage: `Welcome, ${user}!`,
+                name: sess.name,
+                isMaster: sess.isMaster,
+                users: result.sockets
+            });
+            socket.broadcast.to(sess.room).emit('join', {
+                joinMessage: `${user} has joined the chat`,
+                users: result.sockets
+            });
+        });
     });
 
     socket.on('updateChat', message => {
@@ -88,12 +112,6 @@ io.on('connection', socket => {
                 .then( res => {
 
                 })
-                .catch(err => {
-
-                })
-            })
-            .catch( err => {
-
             })
             sess.masterSocket = io.sockets.connected[socket.id];
         } else if (sess.isMaster) {
@@ -113,37 +131,30 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
-
-        io.to(sess.room).emit('join', {
-            joinMessage: `${user} has left the chat`
-        });
         if (sess.isMaster){
             Room.deleteOne({room: sess.room})
             .then( result => {
+                io.to(sess.room).emit('destroy');
+            });
 
-            })
-            .catch (err => {
+        } else {
+            Room.findOne({room: sess.room})
+            .then( result => {
+                result.sockets = result.sockets.filter( val => val.socket != socket.id)
+                Room.findOneAndUpdate({room: sess.room}, result)
+                .then( res => {
+                    io.to(sess.room).emit('join', {
+                        joinMessage: `${user} has left the chat`,
+                        users: result.sockets
+                    });
+                })
 
-            })
+            });
         }
        sess.destroy();
-        
     });
 
 });
-
-/**
- * Direct requests to Route Handler
- */
-app.use('', mainRoutes);
-
-/**
- * 404 Error Page
- */
-app.use( (req, res) => {
-    res.status(404).render('404', {title: 'Page Not Found'});
-});
-
 
 
 

@@ -16,7 +16,7 @@ const roomSchema = new mongoose.Schema({
     sockets: {
         type: Array,
         required: false
-    }
+    },
 });
 
 const Room = mongoose.model('room', roomSchema);

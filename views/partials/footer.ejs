@@ -1,42 +1,16 @@
-<!-- Footer -->
-<footer class="page-footer font-small blue footer-custom">
 
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3"> <p> &copy 2020 Copyright Dulhan N.W. </p>
+    </section>
+
+<footer class="bg-dark footer-custom">
+
+    <div class="text-center footer-text"> <p> Made by Dulhan N.W. </p>
     </div>
-    <!-- Copyright -->
 
 </footer>
-<!-- Footer -->
-
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
-<script>
-
-    const footer = document.querySelector('.footer-custom');
-    footer.style.display = "none";
-
-    setTimeout(() => {
-        const body = document.querySelector('body');
-        const html = document.querySelector('html');
-
-
-        let marginTop = 75;
-        if (body.offsetHeight < $(document).height()) {
-            marginTop +=  $(document).height() - body.offsetHeight;
-            console.log(marginTop);
-        }
-
-        document.querySelector('.footer-custom').setAttribute("style", "margin-top:" + marginTop + "px;");
-        footer.style.display = "";
-
-    }, 500);
-
-        
-</script>
 
 </body>
 </html>

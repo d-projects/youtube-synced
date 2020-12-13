@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+.main {
+    min-height: 95.5vh;
+}
+
 .bg {
     /* The image used */
     background-image: url("../img/xps-7ZWVnVSaafY-unsplash.jpg");
@@ -49,7 +53,7 @@
 
 .sessionID {
     text-align: center;
-    flex: 3;
+    flex: 1;
     margin-right: 10px;
     margin-bottom: 10px;
     padding: 10px 0;
@@ -58,7 +62,7 @@
     border-radius: 5px;
 }
 
-.controls-header {
+.user-count {
     flex: 1;
     padding: 10px 0;
     text-align: center;
@@ -68,9 +72,8 @@
     background-color: black;
     color: white;
     border-radius: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-    
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .right-container {
@@ -111,9 +114,6 @@
 
 .view-users-container {
     flex: 8;
-    text-align: center;
-    /* border-style: solid;
-    border-radius: 5px; */
 }
 
 .change-name-container {
@@ -195,18 +195,14 @@
 }
 
 .footer-custom {
-    /* position: relative;
-    margin-top: 250px; negative value of footer height */
-    height: 75px;
-    background-color:black;
+    height: 3rem;
     color: white;
+}
+
+.footer-text {
+    padding: 0.5rem 0 0 0 ;
 }
 
 * {
     box-sizing: border-box;
 } 
-
-/* .okok {
-    pointer-events: none;
-
-    } */

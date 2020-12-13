@@ -8,17 +8,10 @@ function onYouTubeIframeAPIReady() {
     })
     .then( data => {
         const videoID = data;
-        console.log('yay')
         player = new YT.Player('video-container', {
             height: '600',
             width: '1000',
             videoId: videoID,
-            // playerVars: {
-            //     controls: 0,
-            //     disablekb: 1,
-            //     rel : 0,
-            //     fs : 0,
-            // },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
@@ -45,13 +38,11 @@ function onYouTubeIframeAPIReady() {
     scriptLoc.appendChild(tag);
     
 }
-// 4. The API will call this function when the video player is ready.
+
 function onPlayerReady(event) {
     //syncUp()
 }
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
+
 let done = false;
 let previous_state = 0;
 let current_state = 0;

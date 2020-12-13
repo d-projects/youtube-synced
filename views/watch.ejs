@@ -24,8 +24,8 @@
                 <h4> Room ID: <%= room %> <h4>
             </div>
     
-            <div class="controls-header">
-                <h4>Controls</h4>
+            <div class="user-count">
+                <h4>Participants: <span class = "numPeople"></span></h4>
             </div>
 
         </div>
@@ -53,12 +53,10 @@
             </form>
 
             <div class = "view-users-container" style = "display: none;">
-                <h3> This feature is currently unavailable </h3>
-                <!-- <ul>
-                    <li>Test</li>
-                    <li>Test</li>
-                    <li>Test</li>
-                </ul> -->
+                <h3 class = "text-center"> Users </h3>
+                <ol>
+
+                </ol>
             </div>
 
             <div class = "change-name-container" style = "display: none;">
@@ -98,10 +96,6 @@
                     
                 <div class="form-row">
                     <button type = "button" class = "btn btn-success view-users">View All Users</button>
-                </div>
-
-                <div class="form-row">
-                    <button type = "button" class = "btn btn-warning name-change">Change Name</button>
                 </div>
 
                 <div class="form-row">

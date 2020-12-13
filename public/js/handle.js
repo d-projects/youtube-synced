@@ -11,21 +11,30 @@ let selfName;
 const mainMsg = document.querySelector('.main-message h4');
 let syncing = true;
 let isMaster;
+let users;
 const chatContainer = document.querySelector('.chat-container');
 const usersContainer = document.querySelector('.view-users-container');
-const nameContainer = document.querySelector('.change-name-container');
+const usersList = document.querySelector('.view-users-container ol');
 const messageForm = document.querySelector('#msgForm');
 
 socket.on('join', info => {
     document.querySelector("#message").innerText = info.joinMessage;
     if (!selfName){
         selfName = info.name;
-        console.log(selfName);
     }
     if (!isMaster) {
         isMaster = info.isMaster
         mainMsg.innerText = 'You are the host';
     }
+    users = info.users;
+    document.querySelector('.numPeople').innerText = users.length;
+    usersList.innerHTML = '';
+    let li;
+    users.forEach(userInfo => {
+        li = document.createElement('li');
+        li.innerText = userInfo.name;
+        usersList.appendChild(li);
+    });
 });
 
 socket.on('syncing', () => {
@@ -169,21 +178,12 @@ document.querySelector('#nameForm').addEventListener('submit', (e) => {
 document.querySelector('.view-users').addEventListener('click', (e) => {
     chatContainer.style.display = 'none';
     messageForm.style.display = 'none';
-    nameContainer.style.display = 'none';
     usersContainer.style.display = '';
-})
-
-document.querySelector('.name-change').addEventListener('click', (e) => {
-    chatContainer.style.display = 'none';
-    messageForm.style.display = 'none';
-    usersContainer.style.display = 'none';
-    nameContainer.style.display = '';
-})
+});
 
 document.querySelector('.view-chat').addEventListener('click', (e) => {
     usersContainer.style.display = 'none';
-    nameContainer.style.display = 'none';
     chatContainer.style.display = '';
     messageForm.style.display = '';
-})
+});
 

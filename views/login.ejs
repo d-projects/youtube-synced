@@ -2,6 +2,27 @@
 <%- include ('./partials/nav') %>
 
 <br> <br>
-<h1 class="text-center"> This page is currently not available. Sorry! </h1>
 
+<div class = "auth-form">
+    <form class = "form-signin" method = "post" action = "/authorize">
+        <h1 class="h3 mb-3 font-weight-normal text-center"> Log in</h1>
+        <div class="social-login">
+            <!-- OAuth-->
+            <!-- <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span> </button>
+            <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </button> -->
+        </div>
+        <!-- <p class="text-center"> OR  </p> -->
+        <% if (inValid) {  %>
+            <div class = "alert alert-warning"> The entered email/password combination is incorrect. </div>
+        <% } %>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""><br/>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required=""><br/>
+        
+        <button class="btn btn-secondary btn-block" type="submit"><i class="fas fa-sign-in-alt"></i>Log In</button>
+        <a href="/forgot-password" id="forgot-password">Forgot password?</a>
+        <a href="/sign-up" id="create-account">Create an Account</a>
+    </form>
+              
+</div>
 
+<%- include ('./partials/footer') %>
