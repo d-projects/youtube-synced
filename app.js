@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 const Room = require('./models/room.js');
-const config = require('./config.js');
 const socketio = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
 const ios = require('socket.io-express-session');
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 /**
@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /**
  * Connect to database
  */
-const dbURI = `mongodb+srv://${config.db_user}:${config.db_password}@${config.db_cluster}.ffgxc.mongodb.net/${config.db_name}`;
+const dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.ffgxc.mongodb.net/${process.env.DB_NAME}`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result => {
     server.listen(port);
