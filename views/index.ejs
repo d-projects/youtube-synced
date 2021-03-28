@@ -57,7 +57,13 @@
       <!-- Modal body -->
       <div class="modal-body">
         <form action="/watch" method="POST">
-          <div class="form-group w-75">
+          <div class="form-group w-100">
+            <p> <strong> Please Note: </strong> </p>
+            <p class = "lag-msg">
+              Accessing the room may take a few tries. If the video screen is not showing up when you get to the room,
+              leave the room and try again. Once you get to the room and the video screen is visible, there should not be any issues from that point on.
+              This issue is arises due to the nature of websockets on Heroku.
+            </p>
             <label for="name">Please Enter Your Name:</label>
             <input type="text" name="name" class="form-control" id="name" minlength="2">
             <input type="hidden" name="room" class="form-control" id="room" minlength="2">
@@ -67,72 +73,10 @@
       </form>
       </div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
-
     </div>
   </div>
 </div>
 
-<script>
-document.querySelector('#joinForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const room = e.target.room.value;
-  const warningMsg = document.querySelector('.warning-msg');
-
-  fetch('/checkRoom?room='+room)
-  .then (result => result.json())
-  .then( response => {
-    if (response === 'Valid') {
-      $('#nameModal').modal('show');
-      $('#nameModal').find('#name').focus();
-      $('#room').val(room);
-      $('#url').val('');
-    } else {
-      throw new Error('Please enter a valid room ID');
-    }
-    if (!warningMsg.classList.contains('d-none')){
-      warningMsg.classList.add('d-none');
-    }
-  })
-  .catch( err => {
-    warningMsg.classList.remove('d-none');
-    warningMsg.innerHTML = `<h4> ${err} </h4>`;
-  })
-
-});
-
-document.querySelector('#startForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const url = e.target.url.value;
-  console.log(url)
-  const warningMsg = document.querySelector('.warning-msg');
-
-  fetch('/checkURL?url='+url)
-  .then (result => result.json())
-  .then( response => {
-    if (response === 'Valid') {
-      $('#nameModal').modal('show');
-      $('#nameModal').find('#name').focus();
-      $('#url').val(url);
-      $('#room').val('');
-    } else {
-      throw new Error(response);
-    }
-    if (!warningMsg.classList.contains('d-none')){
-      warningMsg.classList.add('d-none');
-    }
-  })
-  .catch( err => {
-    warningMsg.classList.remove('d-none');
-    warningMsg.innerHTML = `<h4> ${err} </h4>`;
-  })
-
-});
-
-
-</script>
+<script src = "js/validate.js"></script>
 
 <%- include ('./partials/footer') %>

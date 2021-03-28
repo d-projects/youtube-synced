@@ -203,6 +203,10 @@
     padding: 0.5rem 0 0 0 ;
 }
 
+.lag-msg {
+    color: red;
+}
+
 * {
     box-sizing: border-box;
 } 
