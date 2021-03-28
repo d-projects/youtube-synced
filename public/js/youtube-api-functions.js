@@ -18,14 +18,6 @@ function onYouTubeIframeAPIReady() {
             }
         })
         
-        setTimeout( () => {
-            syncUp();
-            // double sync just in case
-            setTimeout( () => {
-                syncUp();
-            }, 500);
-        }, 500);
-
         document.querySelector('iframe').classList.add('.responsive-iframe');
     })
     .catch( err => {
@@ -40,15 +32,13 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(event) {
-    //syncUp()
+    syncUp();
 }
 
-let done = false;
-let previous_state = 0;
-let current_state = 0;
 function onPlayerStateChange(event) {
     updateState(event);
 }
+
 function stopVideo() {
     player.stopVideo();
 }

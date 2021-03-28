@@ -1,7 +1,6 @@
 /**
- * Handles routing of all pages
+ * This page handles routing of all pages
  */
-
 const express = require('express');
 const router = express.Router();
 const mainController = require('../controllers/mainController.js');
@@ -10,8 +9,8 @@ const mainController = require('../controllers/mainController.js');
  * Get Routes (webpages)
  */
 router.get('', mainController.main_index);
-router.get('/login', mainController.main_login_get);
-router.get('/sign-up', mainController.main_signUp_get);
+router.get('/login', mainController.main_login_get); // -- not set yet
+router.get('/sign-up', mainController.main_signUp_get); // -- not set yet
 router.get('/noAccess', mainController.main_noAccess_get);
 router.get('/forgot-password', mainController.main_forgotPassword_get);
 
@@ -28,7 +27,7 @@ router.get('/checkRoom', mainController.main_checkRoom_get);
 router.post('/watch', mainController.main_watch_post);
 
 /**
- * Post Routes (authorization)
+ * Post Routes (authorization) -- not set yet
  */
 router.post('/authorize', mainController.main_authorize_post);
 router.post('/sign-up', mainController.main_signUp_post);
